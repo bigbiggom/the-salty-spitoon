@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
 import GlobalStyles from "./components/common/GlobalStyles"
@@ -44,6 +44,20 @@ const UnderlineInput = styled.input`
 `
 
 const App = () => {
+  const [summonerName, setSummonerName] = useState('')
+
+  const handleInputSummonerName = (e) => {
+    setSummonerName(e.target.value)
+  }
+
+  const handleRegistration = () => {
+    const url = `http://52.78.141.216:3001/summoner/${summonerName}`
+    fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+      })
+  }
   return (
     <Root>
       <GlobalStyles />
@@ -56,8 +70,8 @@ const App = () => {
           <SubHeader>THE SALTY SPITOON</SubHeader>
         </CenterColumnContainer>
         <div>
-          <UnderlineInput placeholder="소환사명 입력" />
-          <button>멤버 등록</button>
+          <UnderlineInput placeholder="소환사명 입력" value={summonerName} onChange={handleInputSummonerName} />
+          <button onClick={handleRegistration}>멤버 등록</button>
         </div>
       </ColumnContainer>
     </Root>
