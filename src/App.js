@@ -1,110 +1,67 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
+import styled from 'styled-components'
+
+import GlobalStyles from "./components/common/GlobalStyles"
+
+const Root = styled.div`
+  font-family: 'SpoqaHanSansNeo-Regular';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const ColumnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+`
+
+const CenterColumnContainer = styled(ColumnContainer)`
+  align-items: center;
+`
+
+const Header = styled.h1`
+  font-family: 'SpoqaHanSansNeo-Bold';
+  font-size: 3.25rem;
+  margin: 0;
+`
+
+const SubHeader = styled.h2`
+  margin: 0;
+`
+
+const UnderlineInput = styled.input`
+  font-family: 'SpoqaHanSansNeo-Regular';
+  font-size: 1.5rem;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  &:focus {
+    outline: none;
+  }
+`
 
 const App = () => {
-  const [summonerName, setSummonerName] = useState('')
-  const [teamParams, setTeamParams] = useState('')
-  const [champList, setChampList] = useState([])
-  const [pickList, setPickList] = useState(null)
-
-
-  const handleInput = (e) => {
-    setSummonerName(e.target.value)
-  }
-  
-  const handleTeamInput = (e) => {
-    setTeamParams(e.target.value)
-  }
-
-  const handleClick = (e) => {
-    fetch(`http://localhost:3001/summoner/${summonerName}`)
-    .then(res => res.json())
-    .then(json => {
-      setChampList(json)
-    })
-  }
-
-  const handleTeamClick = (e) => {
-    fetch(`http://localhost:3001/match/pick/${teamParams}`)
-    .then(res => res.json())
-    .then(json => {
-      setPickList(json.pickResultObj)
-    })
-  }
-
-
   return (
-    <div>
+    <Root>
+      <GlobalStyles />
       <div>
-        <input value={summonerName} onChange={handleInput} />
-        <button onClick={handleClick}>소환사 조회</button>
+        <img src="/images/main.gif" alt="main gif" />
       </div>
-      <ul>
-        {
-          champList
-            .filter((x, i) => i < 5)
-            .map(champInfo => (
-              <li>
-                <img
-                  src={`/images/portraits/120/${champInfo.key}.png`}
-                  alt={champInfo.name}
-                />
-                {champInfo.name}
-              </li>
-            ))
-        }
-      </ul>
-      <div>
-        <input value={teamParams} onChange={handleTeamInput} />
-        <button onClick={handleTeamClick}>랜덤픽</button>
-      </div>
-      {
-        pickList && (
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              {
-                pickList[0].map(({name, pickedChampions}) => {
-                  return (
-                    <div style={{ margin: '0 10px' }}>
-                      <div style={{ textAlign: 'center', fontSize: 24 }}>{name}</div>
-                      <div>
-                        {
-                          pickedChampions.map(({key, name}) => {
-                            return <img style={{ width: 70 }} src={`/images/portraits/120/${key}.png`} />
-                          })
-                        }
-                      </div>
-                    </div>
-                  )
-                })
-              }
-            </div>
-            <div style={{ textAlign: 'center', fontSize: 16 }}>
-              VS
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-            {
-              pickList[1].map(({name, pickedChampions}) => {
-                return (
-                  <div style={{ margin: '0 10px' }}>
-                    <div style={{ textAlign: 'center', fontSize: 24 }}>{name}</div>
-                    <div>
-                      {
-                        pickedChampions.map(({key, name}) => {
-                          return <img style={{ width: 70 }} src={`/images/portraits/120/${key}.png`} />
-                        })
-                      }
-                    </div>
-                  </div>
-                )
-              })
-            }
-            </div>
-          </div>
-        )
-      }
-    </div>
+      <ColumnContainer>
+        <CenterColumnContainer>
+          <Header>ㅅㄴㅇ ㅋㄹ</Header>
+          <SubHeader>THE SALTY SPITOON</SubHeader>
+        </CenterColumnContainer>
+        <div>
+          <UnderlineInput placeholder="소환사명 입력" />
+          <button>멤버 등록</button>
+        </div>
+      </ColumnContainer>
+    </Root>
   )
-
 }
 
 export default App
